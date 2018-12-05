@@ -1,4 +1,4 @@
-package list;
+﻿package list;
 
 public class Array_ {
 	
@@ -26,8 +26,8 @@ public class Array_ {
 			}
  
 		}
-		 
-		public boolean binaryFind(int serchValue) {
+		 //二分查找只能查找有顺序的顺序表
+		public int binaryFind(int serchValue) {
 			int lowIndex = 0;
 			int hightIndex = arrElems - 1;
 			int halfIndex;
@@ -36,9 +36,9 @@ public class Array_ {
 					
 			halfIndex = (lowIndex + hightIndex)/2;
 			if(arr[halfIndex] == serchValue){
-				return true;
+				return halfIndex + 1;
 			}else if (lowIndex > hightIndex) {  //如果没有元素，那么返回false
-				return false;
+				return -1;
 			}else {
 					if (arr[halfIndex] < serchValue) {
 						lowIndex = halfIndex + 1;  //已经排除了不等于中间和大于左边，那么 赋值给左边的时候就要 中间 + 1 
@@ -51,10 +51,40 @@ public class Array_ {
 			}	
 			
 		}
-		 
-		public void insert(int insertValue) {
+		 //第二种写法
+		//二分查找,返回元素所在的第几个位置
+		public int binaryFind1(int value){
+			int halfIndex;
+			int lowIndex = 0;
+			int hightIndex = arrElems - 1;
 			
-			arr[arrElems++] = insertValue;
+			if (value < arr[0] || value > arr[hightIndex] || lowIndex > hightIndex) {
+				return -1;
+			}
+			
+			while (lowIndex <= hightIndex) {
+				halfIndex = (lowIndex + hightIndex)/2;
+				if (arr[halfIndex] == value) {  //有两种情况
+					return halfIndex + 1;
+				}else if (arr[halfIndex] < value) { //一次只有一个被赋值！不能两个(lowIndex,hightIndex)都赋值
+						lowIndex = halfIndex + 1;
+				}else {
+					hightIndex = halfIndex - 1;
+				}
+					
+				
+				
+			}
+			
+			
+			return -1;
+			
+			
+		}
+		 
+		public void init(int value) {
+			
+			arr[arrElems++] = value;
 			
 		}
 		
@@ -91,8 +121,35 @@ public class Array_ {
 	
 		}
 		 
-		 
+		 //插入第几个位置
+		/*
+		 * 1、判断插入位置是否合理    
+		 * 2、如果插入位置是1或者等于表里元素个数，直接插入
+		 * 3、如果插入位置不是2的情况，那么就需要将 该位置上及以后的元素依次后移一个位置
+		 */
+		public boolean insert(int loc,int value){
+			int i;
+			
+			if (loc < 1 ||  loc > arrElems + 1 || arrElems + 1 > arr.length) {  //表容量已满 和 插入位置不合理
+				        // arr.length 等于正常数
+				return false;
+			}
+			
+			if (loc == 1 && arrElems == 0 || loc == arrElems + 1) {
+				arr[loc - 1] = value;
+			}
+			
+			for (i = arrElems ;  i >= loc ; i--) {//i >= loct 移到插入位置
+				arr[i] = arr[i-1];	//先移最后一个	
+			}
+			arr[loc - 1] = value; 
+			arrElems++;
+			
+
+			return true;
 		
+		}
+
 		
 		
 	
